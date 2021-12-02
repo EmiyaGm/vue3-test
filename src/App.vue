@@ -1,12 +1,48 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+import 'mui-player/dist/mui-player.min.css'
+import MuiPlayer from 'mui-player'
+import { onMounted, ref } from 'vue'
+import Hls from 'hls.js'
+
+export default {
+  name: 'App',
+  setup() {
+    const mp = ref(null)
+    onMounted(() => {
+      mp.value = new MuiPlayer({
+        container: '#mui-player',
+        title: '直播测试',
+        src: 'https://krtxplay1.setrtmp.com/live/SSAC-235128-AEAAF.m3u8',
+        width: 'auto',
+        height: 'auto',
+        live: true,
+        autoplay: true,
+        muted: true,
+        poster: '',
+        parse: {
+          type: 'hls',
+          loader: Hls,
+          config: {
+            debug: false,
+          },
+        },
+      })
+    })
+
+    const liveDispose = () => {
+      mp.value.destory()
+    }
+
+    return {
+      liveDispose,
+    }
+  },
+}
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <div id="mui-player"></div>
+  <button @click="liveDispose">destroy</button>
 </template>
 
 <style>
@@ -17,5 +53,9 @@ import HelloWorld from './components/HelloWorld.vue'
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+#mui-player {
+  width: 600px;
+  height: 300px;
 }
 </style>
