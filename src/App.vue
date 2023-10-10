@@ -1,48 +1,27 @@
-<script>
-import 'mui-player/dist/mui-player.min.css'
-import MuiPlayer from 'mui-player'
-import { onMounted, ref } from 'vue'
-import Hls from 'hls.js'
+<script setup>
+import { useRouter } from 'vue-router'
 
-export default {
-  name: 'App',
-  setup() {
-    const mp = ref(null)
-    onMounted(() => {
-      mp.value = new MuiPlayer({
-        container: '#mui-player',
-        title: '直播测试',
-        src: 'https://krtxplay1.setrtmp.com/live/SSAC-235128-AEAAF.m3u8',
-        width: 'auto',
-        height: 'auto',
-        live: true,
-        autoplay: true,
-        muted: true,
-        poster: '',
-        parse: {
-          type: 'hls',
-          loader: Hls,
-          config: {
-            debug: false,
-          },
-        },
-      })
-    })
-
-    const liveDispose = () => {
-      mp.value.destory()
-    }
-
-    return {
-      liveDispose,
-    }
-  },
+const router = useRouter()
+const toPage = (url) => {
+  router.push(url)
 }
 </script>
 
 <template>
-  <div id="mui-player"></div>
-  <button @click="liveDispose">destroy</button>
+  <div>
+    <hr />
+    <div>
+      <router-link to="/">index</router-link>
+      -----------------
+      <router-link to="/mui_player">mui_player</router-link>
+      -----------------
+      <router-link to="/ref_array">ref_array</router-link>
+      <hr />
+    </div>
+
+    <hr />
+    <router-view></router-view>
+  </div>
 </template>
 
 <style>
@@ -53,9 +32,5 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-#mui-player {
-  width: 600px;
-  height: 300px;
 }
 </style>
