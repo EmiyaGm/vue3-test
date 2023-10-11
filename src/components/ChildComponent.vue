@@ -10,7 +10,7 @@
   </div>
 </template>
 <script setup>
-import { watch, computed, ref, onBeforeUpdate } from 'vue'
+import { watch, onMounted, ref, onBeforeUpdate } from 'vue'
 
 const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
@@ -19,15 +19,19 @@ const arr = ref([])
 
 onBeforeUpdate(() => {
   console.log('-----44444------')
-}),
+})
 
 watch(
   () => props.modelValue,
   (newValue) => {
-    console.log('------1111-------')
     try {
-      if (arr.value.length != newValue.length) {
+      if (arr.value !== newValue) {
+        console.log('----3333-----')
         arr.value = newValue
+      } else if (arr.value.length != newValue.length) {
+        arr.value = newValue
+      } else {
+        console.log('------2222------')
       }
     } catch (error) {}
   },
